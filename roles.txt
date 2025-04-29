@@ -1,0 +1,3 @@
+Roles:
+Jhoan David Chacón Morán: Encargado de modificar el servidor de pedidos para registrar cocineros y enviar notificaciones a estos.
+Jonathan David Guejia Burbano: Encargado de crear el servidor de cocineros
