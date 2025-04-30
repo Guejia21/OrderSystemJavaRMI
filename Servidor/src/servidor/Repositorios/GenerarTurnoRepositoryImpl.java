@@ -16,7 +16,7 @@ import servidor.controladores.ControladorRegistroReferenciaCocinerosImpl;
  * @author David
  */
 public class GenerarTurnoRepositoryImpl implements GeneradorTurnoRepositoryInt{
-    private int numeroTurno;
+    //private int numeroTurno;
     private int cantidadPedidosFila = 0;
     private final CocineroDTO vectorCocineros[];
     private final HamburguesaDTO pedidosFilaVirtual[];
@@ -27,7 +27,7 @@ public class GenerarTurnoRepositoryImpl implements GeneradorTurnoRepositoryInt{
         System.out.println("Configurando cocineros");
         this.vectorCocineros = new CocineroDTO[3];
         this.pedidosFilaVirtual = new HamburguesaDTO[10];
-        this.numeroTurno = 1;
+        //this.numeroTurno = 1;
         for(int i = 0; i<3; i++){
             this.vectorCocineros[i] = new CocineroDTO();
             this.vectorCocineros[i].setNoCocinero(i+1);
@@ -70,12 +70,16 @@ public class GenerarTurnoRepositoryImpl implements GeneradorTurnoRepositoryInt{
             this.vectorCocineros[posicion].setObjHamburguesa(objHamburguesa);
             this.vectorCocineros[posicion].setNoCocinero(posicion+1);
             System.out.println("Notificando al cocinero asignado");
-            this.objReferenciaControladorReferenciaCocineros.notificarCocinero("Se ha asignado para cocinar una nueva hamburguesa con los siguientes datos: "
-                                                                                + " nombre "+objHamburguesa.getNombre() +" "
-                                                                                + " tipo "+objHamburguesa.getTipoHamburguesa() +" "
-                                                                                + " cantidad de ingredientes extra "+objHamburguesa.getCantidadIngredientesExtra(), posicion+1);   
+            try {
+                this.objReferenciaControladorReferenciaCocineros.notificarCocinero("Se ha asignado para cocinar una nueva hamburguesa con los siguientes datos: "
+                                                                                    + " nombre "+objHamburguesa.getNombre() +" "
+                                                                                    + " tipo "+objHamburguesa.getTipoHamburguesa() +" "
+                                                                                    + " cantidad de ingredientes extra "+objHamburguesa.getCantidadIngredientesExtra(), posicion+1);
+            } catch (RemoteException e) {
+                System.out.println("Error al notificar al cocinero "+e.getMessage());
+            }   
         }
-        this.numeroTurno++;
+        //this.numeroTurno++;
         NotificacionDTO objNotificacion = new NotificacionDTO();
         objNotificacion.setVectorCocineros(vectorCocineros);
         objNotificacion.setCantidadPedidosFilaVirtual(cantidadPedidosFila);

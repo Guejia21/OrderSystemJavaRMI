@@ -2,8 +2,8 @@ package cliente.controladores;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 
-public class ControladorCallBackImp extends UnicastRemoteObject implements ControladorCallBackInt{
-    public ControladorCallBackImp() throws RemoteException{
+public class ControladorCocineroCallBackImp extends UnicastRemoteObject implements ControladorCocineroCallBackInt{
+    public ControladorCocineroCallBackImp() throws RemoteException{
         super();    
     }
     @Override

@@ -4,10 +4,11 @@ import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.HashMap;
 
-import cliente.controladores.ControladorCallBackInt;
+import cliente.controladores.ControladorCocineroCallBackInt;
+
 
 public class ControladorRegistroReferenciaCocinerosImpl extends UnicastRemoteObject implements ControladorRegistroReferenciaCocinerosInt{
-    private final HashMap<Integer, ControladorCallBackInt> referencias;
+    private final HashMap<Integer, ControladorCocineroCallBackInt> referencias;
     
     public ControladorRegistroReferenciaCocinerosImpl() throws RemoteException {
         super();
@@ -15,11 +16,18 @@ public class ControladorRegistroReferenciaCocinerosImpl extends UnicastRemoteObj
     }
 
     @Override
-    public void registrarReferenciaCocinero(ControladorCallBackInt referenciaCocinero, int noCocinero) throws RemoteException{
+    public void registrarReferenciaCocinero(ControladorCocineroCallBackInt referenciaCocinero, int noCocinero) throws RemoteException{
         this.referencias.put(noCocinero, referenciaCocinero);
     }
-
-    public void notificarCocinero(String mensaje, int noCocinero){
+    @Override
+    public boolean estaActivado(){
+        return ControladorRegistroReferenciaAdminImp.getActivated();
+    }
+    public void notificarCocinero(String mensaje, int noCocinero) throws RemoteException{        
+        if(!ControladorRegistroReferenciaAdminImp.getActivated()){
+            System.out.println("El servidor no esta activo, no se puede notificar al cocinero");
+            return;
+        }
         var referencia = this.referencias.get(noCocinero);
         try{
             referencia.notificarAsignacionPedido(mensaje);

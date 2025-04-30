@@ -12,4 +12,5 @@ import servidor.DTO.HamburguesaDTO;
  */
 public interface ControladorGeneradorTurnoInt extends Remote{
     public int generarTurno(HamburguesaDTO objHamburguesa) throws RemoteException;
+    public boolean estaActivado() throws RemoteException;
 }

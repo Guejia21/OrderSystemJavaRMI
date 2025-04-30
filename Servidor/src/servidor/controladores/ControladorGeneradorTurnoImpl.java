@@ -20,6 +20,10 @@ public class ControladorGeneradorTurnoImpl extends UnicastRemoteObject implement
     
     @Override
     public int generarTurno(HamburguesaDTO objHamburguesa) throws RemoteException{
-        return this.objRepositorio.generarTurno(objHamburguesa);
+        return this.objRepositorio.generarTurno(objHamburguesa);        
+    }
+    @Override
+    public boolean estaActivado(){
+        return ControladorRegistroReferenciaAdminImp.getActivated();
     }
 }

@@ -29,8 +29,7 @@ public class UtilidadesRegistroS {
 
                 } catch (RemoteException e) {
                         System.out.println("El rmiRegistry no se localizó en el puerto: " + numPuertoRMI);
-
-                        Registry registro = LocateRegistry.createRegistry(numPuertoRMI);
+                        LocateRegistry.createRegistry(numPuertoRMI);
                         System.out.println("El rmiRegistry  se ha creado en el puerto: " + numPuertoRMI);
                 }
 
@@ -47,8 +46,7 @@ public class UtilidadesRegistroS {
                         System.out.println("Error en el registro del objeto remoto");
                         e.printStackTrace();
                 } catch (MalformedURLException e) {
-                        System.out.println("Error url inválida");
-                        // TODO Auto-generated catch block
+                        System.out.println("Error url inválida");                        
                         e.printStackTrace();
                 }
 

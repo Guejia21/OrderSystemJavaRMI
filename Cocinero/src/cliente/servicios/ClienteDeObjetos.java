@@ -1,6 +1,6 @@
 package cliente.servicios;
 
-import cliente.controladores.ControladorCallBackImp;
+import cliente.controladores.ControladorCocineroCallBackImp;
 import cliente.utilidades.UtilidadesConsola;
 import cliente.utilidades.UtilidadesRegistroC;
 import java.rmi.RemoteException;
@@ -14,12 +14,12 @@ public class ClienteDeObjetos {
         int numPuertoRMIRegistry = UtilidadesConsola.leerEntero("Puerto(0 a 65535): ", 0, 65535);
         int noModulo = UtilidadesConsola.leerEntero("Número cocinero asignado: ", 0, 3);
         objRemoto = (ControladorRegistroReferenciaCocinerosInt) UtilidadesRegistroC.obtenerObjRemoto(
-            direcionIpRMIRegistry, 
-            numPuertoRMIRegistry, 
-            "controladorRegistroReferenciaCocineros");
-        ControladorCallBackImp objRemotoLadoCliente;    
+                direcionIpRMIRegistry,
+                numPuertoRMIRegistry,
+                "controladorRegistroReferenciaCocineros");
+        ControladorCocineroCallBackImp objRemotoLadoCliente;    
         try{
-            objRemotoLadoCliente = new ControladorCallBackImp();
+            objRemotoLadoCliente = new ControladorCocineroCallBackImp();
             objRemoto.registrarReferenciaCocinero(objRemotoLadoCliente, noModulo);
             System.out.println("Esperando Notificaciones: ");
         }catch(RemoteException ex){

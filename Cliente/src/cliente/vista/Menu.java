@@ -35,8 +35,12 @@ public class Menu {
         } while (opcion != 2);
     }
 
-    private void Opcion1() {
+    private void Opcion1()  {        
         try {
+            if(!objRemoto.estaActivado()){
+                System.out.println("El sistema se encuentra desactivado, intente más tarde");
+                return;
+            }
             System.out.println("===============Registro de Pedido de Hamburguesa===============");            
             int mesa = UtilidadesConsola.leerEntero("Número de mesa: ",0,100);            
             String nombre = UtilidadesConsola.leerCadena("Nombre: ");           
