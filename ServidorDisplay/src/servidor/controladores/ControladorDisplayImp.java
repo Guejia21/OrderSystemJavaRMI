@@ -12,6 +12,10 @@ public class ControladorDisplayImp extends UnicastRemoteObject implements Contro
     }
     @Override
     public void mostrarNotificacion(NotificacionDTO objNotificacion) throws RemoteException {
+        // Obtener la hora actual
+        java.time.LocalDateTime ahora = java.time.LocalDateTime.now();
+        java.time.format.DateTimeFormatter formato = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        String horaActualizacion = ahora.format(formato);
         CocineroDTO vectorCocineros[] = objNotificacion.getVectorCocineros();
         System.out.println("============= Turnos y cocineros asignados=============");
         System.out.printf(
@@ -19,7 +23,7 @@ public class ControladorDisplayImp extends UnicastRemoteObject implements Contro
             "No mesa","No cocinero","Cant. Ingredientes", "Nombre Hamburguesa","Tipo"
         );
         for(int i = 0; i<3 ; i++){
-            if (vectorCocineros[i].isOcupado()) {
+            if (vectorCocineros[i] != null && vectorCocineros[i].getObjHamburguesa() != null) {
                 System.out.printf(
                     "%-10s %-12s %-22s %-25s %-10s%n",
                     vectorCocineros[i].getObjHamburguesa().getNoMesa(),
@@ -30,7 +34,10 @@ public class ControladorDisplayImp extends UnicastRemoteObject implements Contro
                 );
             }
         }
-        System.out.println("Cantidad de pedidos en la fila virtual: " + objNotificacion.getCantidadPedidosFilaVirtual());
+        if(objNotificacion.getCantidadPedidosFilaVirtual() > 0){
+            System.out.println("Cantidad de pedidos en la fila virtual: " + objNotificacion.getCantidadPedidosFilaVirtual());
+        }
+        System.out.println("Hora de actualización: " + horaActualizacion);
     }
     
 }

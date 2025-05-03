@@ -29,10 +29,14 @@ public class ControladorRegistroReferenciaCocinerosImpl extends UnicastRemoteObj
             return;
         }
         var referencia = this.referencias.get(noCocinero);
-        try{
-            referencia.notificarAsignacionPedido(mensaje);
-        }catch(RemoteException ex){
-            System.out.println("Error al notificar al cocinero");
+        if (referencia != null) {
+            try {
+                referencia.notificarAsignacionPedido(mensaje);
+            } catch (RemoteException ex) {
+                System.out.println("Error al notificar al cocinero");
+            }
+        } else {
+            System.out.println("No hay cocinero registrado con número: " + noCocinero);
         }
     }
 }

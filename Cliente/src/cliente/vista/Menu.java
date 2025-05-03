@@ -52,8 +52,13 @@ public class Menu {
             HamburguesaDTO objHamburguesa = new HamburguesaDTO(mesa, nombre, cantIngredientesExtra, tipo);
 
             int valor = objRemoto.generarTurno(objHamburguesa);
-            System.out.println("Pedido recibido exitosamente!");
-            System.out.println("Cantidad de pedidos en la fila: " + valor);
+            if(valor > 0){
+                System.out.println("No hay cocineros disponibles, el pedido se ha agregado a la fila virtual");
+                System.out.println("Cantidad de pedidos en la fila: " + valor);
+            }else{
+                System.out.println("Pedido enviado exitosamente!");
+                System.out.println("Cantidad de pedidos en la fila: " + valor);
+            }
         } catch (RemoteException e) {
             System.out.println("La operacion no se pudo completar, intente nuevamente..." + e);
         }

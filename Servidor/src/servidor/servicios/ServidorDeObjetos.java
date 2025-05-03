@@ -6,6 +6,7 @@ package servidor.servicios;
 
 import servidor.Repositorios.GenerarTurnoRepositoryImpl;
 import servidor.controladores.ControladorGeneradorTurnoImpl;
+import servidor.controladores.ControladorPrepararPedidoImp;
 import servidor.controladores.ControladorRegistroReferenciaAdminImp;
 import servidor.controladores.ControladorRegistroReferenciaCocinerosImpl;
 import servidor.utilidades.UtilidadesConsola;
@@ -40,11 +41,13 @@ public class ServidorDeObjetos {
         GenerarTurnoRepositoryImpl objRepositorio = new GenerarTurnoRepositoryImpl(objRemotoDisplay, objRemotoRegistroReferencias);
         ControladorGeneradorTurnoImpl objRemoto = new ControladorGeneradorTurnoImpl(objRepositorio);
         ControladorRegistroReferenciaAdminImp objRemotoRegistroReferenciaAdmin = new ControladorRegistroReferenciaAdminImp();
+        ControladorPrepararPedidoImp objRemotoPrepararPedido = new ControladorPrepararPedidoImp(objRepositorio);
         try{
             UtilidadesRegistroS.arrancarNS(numPuertoRMIRegistryCocineros);
             UtilidadesRegistroS.RegistrarObjetoRemoto(objRemoto, direccionIpRMIRegistryCocineros, numPuertoRMIRegistryCocineros, "controladorGeneradorTurno");
             UtilidadesRegistroS.RegistrarObjetoRemoto(objRemotoRegistroReferencias, direccionIpRMIRegistryCocineros, numPuertoRMIRegistryCocineros, "controladorRegistroReferenciaCocineros");
             UtilidadesRegistroS.RegistrarObjetoRemoto(objRemotoRegistroReferenciaAdmin, direccionIpRMIRegistryCocineros, numPuertoRMIRegistryCocineros, "controladorRegistroReferenciaAdmin");
+            UtilidadesRegistroS.RegistrarObjetoRemoto(objRemotoPrepararPedido, direccionIpRMIRegistryCocineros, numPuertoRMIRegistryCocineros, "controladorPrepararPedido");
         } catch (Exception e){
             System.out.println("No fue posible arrancar el NS o Registrar el objeto remoto" + e.getMessage());
         }
