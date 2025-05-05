@@ -7,7 +7,7 @@ import java.rmi.server.UnicastRemoteObject;
 
 public class ControladorRegistroReferenciaAdminImp extends UnicastRemoteObject implements ControladorRegistroReferenciaAdminInt {
     private ControladorAdminCallBackInt referenciaAdmin;
-    static boolean activado;
+    static boolean activado = false;
     public ControladorRegistroReferenciaAdminImp() throws RemoteException {        
         super();
         this.referenciaAdmin = null;                   

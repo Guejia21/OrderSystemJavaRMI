@@ -10,6 +10,7 @@ import servidor.DTO.NotificacionDTO;
 import java.rmi.RemoteException;
 import servidor.controladores.ControladorDisplayInt;
 import servidor.controladores.ControladorRegistroReferenciaCocinerosImpl;
+import servidor.controladores.ControladorRegistroReferenciaAdminImp;
 
 /**
  *
@@ -22,8 +23,9 @@ public class GenerarTurnoRepositoryImpl implements GeneradorTurnoRepositoryInt{
     private final HamburguesaDTO pedidosFilaVirtual[];
     private final ControladorDisplayInt objRemotoDisplay;
     private final ControladorRegistroReferenciaCocinerosImpl objReferenciaControladorReferenciaCocineros;
+    private final ControladorRegistroReferenciaAdminImp objReferenciaControladorReferenciaAdmin;
     
-    public GenerarTurnoRepositoryImpl(ControladorDisplayInt objRemotoDisplay, ControladorRegistroReferenciaCocinerosImpl objReferenciaControladorReferenciaCocineros) throws RemoteException{
+    public GenerarTurnoRepositoryImpl(ControladorDisplayInt objRemotoDisplay, ControladorRegistroReferenciaCocinerosImpl objReferenciaControladorReferenciaCocineros,ControladorRegistroReferenciaAdminImp objReferenciaControladorReferenciaAdmin) throws RemoteException{
         System.out.println("Configurando cocineros");
         this.vectorCocineros = new CocineroDTO[3];
         this.pedidosFilaVirtual = new HamburguesaDTO[10];
@@ -37,6 +39,7 @@ public class GenerarTurnoRepositoryImpl implements GeneradorTurnoRepositoryInt{
 
         this.objRemotoDisplay = objRemotoDisplay;
         this.objReferenciaControladorReferenciaCocineros = objReferenciaControladorReferenciaCocineros;
+        this.objReferenciaControladorReferenciaAdmin = objReferenciaControladorReferenciaAdmin;
     }
     
     public void imprimirHamburguesa(HamburguesaDTO objHamburguesa){
@@ -53,7 +56,7 @@ public class GenerarTurnoRepositoryImpl implements GeneradorTurnoRepositoryInt{
             System.out.println("No hay cocineros disponibles");
             this.pedidosFilaVirtual[this.cantidadPedidosFila]=objHamburguesa;
             this.cantidadPedidosFila++;
-            System.out.println("El pedido se agregó a la fila virtual");
+            System.out.println("El pedido se agregó a la fila virtual");            
         }else{
             System.out.println("El cocinero en la posicion " +posicion+" esta libre y se asignara al pedido "+objHamburguesa.getNombre());
             this.vectorCocineros[posicion].setOcupado(true);
@@ -81,11 +84,16 @@ public class GenerarTurnoRepositoryImpl implements GeneradorTurnoRepositoryInt{
         NotificacionDTO objNotificacion = new NotificacionDTO();
         objNotificacion.setVectorCocineros(vectorCocineros);
         objNotificacion.setCantidadPedidosFilaVirtual(cantidadPedidosFila);
+        //Notificaciones
         try{
             this.objRemotoDisplay.mostrarNotificacion(objNotificacion);
             System.out.println("Notificando al servidor display");
+            if(this.consultarNumeroCocineroDisponible()==-1){
+                System.out.println("Notificando al administrador ");
+                this.objReferenciaControladorReferenciaAdmin.notificarAdministrador("Todos los cocineros se encuentran ocupados");
+            }
         }catch (RemoteException ex){
-            System.out.println("No fue posible norificar al servidor display "+ex.getMessage());
+            System.out.println("No fue posible enviar las notificaciones"+ex.getMessage());
         }
 
         //actualizarTablaPedidos();
@@ -153,6 +161,7 @@ public class GenerarTurnoRepositoryImpl implements GeneradorTurnoRepositoryInt{
     }
 
     public void actualizarTablaPedidos() {
+        
         NotificacionDTO objNotificacion = new NotificacionDTO();
         objNotificacion.setVectorCocineros(this.vectorCocineros);
         objNotificacion.setCantidadPedidosFilaVirtual(this.cantidadPedidosFila);
@@ -164,8 +173,7 @@ public class GenerarTurnoRepositoryImpl implements GeneradorTurnoRepositoryInt{
         }
     }
 
-    public void reasignarPedidosDeFilaVirtual() {
-        actualizarTablaPedidos();
+    public void reasignarPedidosDeFilaVirtual() {        
         for (int i = 0; i < cantidadPedidosFila; i++) {
             int posicion = consultarNumeroCocineroDisponible();
             if (posicion != -1) { // Si hay un cocinero disponible

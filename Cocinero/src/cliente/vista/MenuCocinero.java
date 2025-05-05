@@ -58,6 +58,10 @@ public class MenuCocinero {
             System.out.println("===============Registro Cocinero===============");
             idCocinero = UtilidadesConsola.leerEntero("Ingrese su ID de cocinero (1-3): ", 1, 3);
             try {
+                if(!objRemoto.estaActivado()){
+                    System.out.println("El sistema se encuentra desactivado, intente más tarde");
+                    return -1;
+                }                
                 if (!objRemoto.validarIdCocineroDisponible(idCocinero)) {
                     objRemoto.registrarCocinero(idCocinero);
                     asignado = true;

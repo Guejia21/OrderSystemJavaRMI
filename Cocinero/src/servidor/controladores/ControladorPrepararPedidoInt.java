@@ -8,4 +8,5 @@ public interface ControladorPrepararPedidoInt extends Remote {
     void registrarCocinero(int idCocinero) throws RemoteException;
     int prepararPedido(int idCocinero) throws RemoteException;
     String detallesPedido(int idCocinero) throws RemoteException;
+    public boolean estaActivado();
 }

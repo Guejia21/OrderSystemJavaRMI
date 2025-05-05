@@ -39,7 +39,10 @@ public class ClienteDeObjetos {
         try{
              // Pedir id cocinero
             MenuCocinero objMenu = new MenuCocinero(objPrepararPedido);
-            int idCocinero = objMenu.pedirIDCocinero();
+            int idCocinero;
+            do{
+                idCocinero = objMenu.pedirIDCocinero();
+            }while(idCocinero==-1);            
             objRemotoLadoCliente = new ControladorCocineroCallBackImp();
             objRemotoRef.registrarReferenciaCocinero(objRemotoLadoCliente, idCocinero);
             // Ejecutar el menu del cocinero

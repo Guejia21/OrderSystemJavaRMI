@@ -38,4 +38,8 @@ public class ControladorPrepararPedidoImp extends UnicastRemoteObject implements
     public String detallesPedido(int idCocinero) throws RemoteException{
         return objRepositorio.detallesPedido(idCocinero);
     }
+    @Override
+    public boolean estaActivado() throws RemoteException{
+        return ControladorRegistroReferenciaAdminImp.getActivated();
+    }
 }

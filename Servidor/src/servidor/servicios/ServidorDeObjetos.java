@@ -22,13 +22,13 @@ import servidor.utilidades.UtilidadesRegistroC;
  */
 public class ServidorDeObjetos {
     public static void main(String args[]) throws RemoteException{
-        int numPuertoRMIRegistryCocineros = 0;
-        String direccionIpRMIRegistryCocineros = "";
+        int numPuertoRMIRegistry = 0;
+        String direccionIpRMIRegistry = "";
         int numPuertoRMIRegistryDisplay = 0;
         String direccionIpRMIRegistryDisplay = "";
         System.out.println("Ingrese los datos del RMI Registry donde se encuentra el servidor de asignación de cocineros: ");        
-        direccionIpRMIRegistryCocineros = UtilidadesConsola.leerCadena("Dirección IP: ");        
-        numPuertoRMIRegistryCocineros = UtilidadesConsola.leerEntero("Puerto: ");
+        direccionIpRMIRegistry = UtilidadesConsola.leerCadena("Dirección IP: ");        
+        numPuertoRMIRegistry = UtilidadesConsola.leerEntero("Puerto: ");
         
         System.out.println("Ingrese los datos del RMI Registry donde se encuentra el servidor display: ");        
         direccionIpRMIRegistryDisplay = UtilidadesConsola.leerCadena("Dirección IP: ");        
@@ -38,16 +38,16 @@ public class ServidorDeObjetos {
             numPuertoRMIRegistryDisplay,
             "controladorDisplay");
         ControladorRegistroReferenciaCocinerosImpl objRemotoRegistroReferencias = new ControladorRegistroReferenciaCocinerosImpl();
-        GenerarTurnoRepositoryImpl objRepositorio = new GenerarTurnoRepositoryImpl(objRemotoDisplay, objRemotoRegistroReferencias);
-        ControladorGeneradorTurnoImpl objRemoto = new ControladorGeneradorTurnoImpl(objRepositorio);
         ControladorRegistroReferenciaAdminImp objRemotoRegistroReferenciaAdmin = new ControladorRegistroReferenciaAdminImp();
+        GenerarTurnoRepositoryImpl objRepositorio = new GenerarTurnoRepositoryImpl(objRemotoDisplay, objRemotoRegistroReferencias,objRemotoRegistroReferenciaAdmin);
+        ControladorGeneradorTurnoImpl objRemoto = new ControladorGeneradorTurnoImpl(objRepositorio);        
         ControladorPrepararPedidoImp objRemotoPrepararPedido = new ControladorPrepararPedidoImp(objRepositorio);
         try{
-            UtilidadesRegistroS.arrancarNS(numPuertoRMIRegistryCocineros);
-            UtilidadesRegistroS.RegistrarObjetoRemoto(objRemoto, direccionIpRMIRegistryCocineros, numPuertoRMIRegistryCocineros, "controladorGeneradorTurno");
-            UtilidadesRegistroS.RegistrarObjetoRemoto(objRemotoRegistroReferencias, direccionIpRMIRegistryCocineros, numPuertoRMIRegistryCocineros, "controladorRegistroReferenciaCocineros");
-            UtilidadesRegistroS.RegistrarObjetoRemoto(objRemotoRegistroReferenciaAdmin, direccionIpRMIRegistryCocineros, numPuertoRMIRegistryCocineros, "controladorRegistroReferenciaAdmin");
-            UtilidadesRegistroS.RegistrarObjetoRemoto(objRemotoPrepararPedido, direccionIpRMIRegistryCocineros, numPuertoRMIRegistryCocineros, "controladorPrepararPedido");
+            UtilidadesRegistroS.arrancarNS(numPuertoRMIRegistry);
+            UtilidadesRegistroS.RegistrarObjetoRemoto(objRemoto, direccionIpRMIRegistry, numPuertoRMIRegistry, "controladorGeneradorTurno");
+            UtilidadesRegistroS.RegistrarObjetoRemoto(objRemotoRegistroReferencias, direccionIpRMIRegistry, numPuertoRMIRegistry, "controladorRegistroReferenciaCocineros");
+            UtilidadesRegistroS.RegistrarObjetoRemoto(objRemotoRegistroReferenciaAdmin, direccionIpRMIRegistry, numPuertoRMIRegistry, "controladorRegistroReferenciaAdmin");
+            UtilidadesRegistroS.RegistrarObjetoRemoto(objRemotoPrepararPedido, direccionIpRMIRegistry, numPuertoRMIRegistry, "controladorPrepararPedido");
         } catch (Exception e){
             System.out.println("No fue posible arrancar el NS o Registrar el objeto remoto" + e.getMessage());
         }
