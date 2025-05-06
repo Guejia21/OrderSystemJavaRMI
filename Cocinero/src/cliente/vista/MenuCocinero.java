@@ -8,15 +8,14 @@ import cliente.utilidades.UtilidadesConsola;
 
 public class MenuCocinero {
     private final ControladorPrepararPedidoInt objRemoto;
-    private int idCocinero;
+    //private int idCocinero;
 
     public MenuCocinero(ControladorPrepararPedidoInt objRemoto) {
         this.objRemoto = objRemoto;
     }
 
-    public void ejecutarMenuCocinero(){
+    public void ejecutarMenuCocinero(int idCocinero) {
         int opc = 0;
-        //pedirIDCocinero();
         do{
             System.out.println("===============Menu Cocinero===============");
             System.out.println("1. Ver detalles del pedido");
@@ -43,7 +42,13 @@ public class MenuCocinero {
                     }
                     break;
                 case 3:
-                    System.out.println("Desconectando...");
+                    try {
+                        objRemoto.deshabilitarCocinero(idCocinero);
+                        System.out.println("Desconectando...");
+                        System.out.println("Gracias por usar nuestra app :)");
+                    } catch (RemoteException e) {
+                        System.out.println("Error al deshabilitar el cocinero: " + e.getMessage());
+                    }
                     break;
                 default:
                 System.out.println("Opción incorrecta");
@@ -54,16 +59,17 @@ public class MenuCocinero {
 
     public int pedirIDCocinero(){
         boolean asignado = false;
+        int id = -1; // Declare id outside the loop
         while (!asignado) {
             System.out.println("===============Registro Cocinero===============");
-            idCocinero = UtilidadesConsola.leerEntero("Ingrese su ID de cocinero (1-3): ", 1, 3);
+            id = UtilidadesConsola.leerEntero("Ingrese su ID de cocinero (1-3): ", 1, 3);
             try {
                 if(!objRemoto.estaActivado()){
                     System.out.println("El sistema se encuentra desactivado, intente más tarde");
                     return -1;
                 }                
-                if (!objRemoto.validarIdCocineroDisponible(idCocinero)) {
-                    objRemoto.registrarCocinero(idCocinero);
+                if (objRemoto.validarIdCocineroDisponible(id)) {
+                    objRemoto.registrarCocinero(id);
                     asignado = true;
                     System.out.println("ID asignado correctamente.");
                 } else {
@@ -73,6 +79,6 @@ public class MenuCocinero {
                 System.out.println("Error al validar el ID del cocinero: " + e.getMessage());
             }
         }
-        return idCocinero;
+        return id;
     }
 }

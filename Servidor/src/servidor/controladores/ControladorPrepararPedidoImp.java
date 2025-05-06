@@ -25,7 +25,7 @@ public class ControladorPrepararPedidoImp extends UnicastRemoteObject implements
 
     @Override
     public boolean validarIdCocineroDisponible(int idCocinero) throws RemoteException{
-        return objRepositorio.consultarNumeroCocineroDisponible() == idCocinero - 1;
+        return objRepositorio.estaCocineroNoInicializado(idCocinero);
     }
 
     @Override
@@ -41,5 +41,10 @@ public class ControladorPrepararPedidoImp extends UnicastRemoteObject implements
     @Override
     public boolean estaActivado() throws RemoteException{
         return ControladorRegistroReferenciaAdminImp.getActivated();
+    }
+
+    @Override
+    public void deshabilitarCocinero(int idCocinero) throws RemoteException{
+        objRepositorio.deshabilitarCocinero(idCocinero);
     }
 }

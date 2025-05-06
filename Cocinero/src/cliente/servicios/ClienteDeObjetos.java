@@ -46,10 +46,10 @@ public class ClienteDeObjetos {
             objRemotoLadoCliente = new ControladorCocineroCallBackImp();
             objRemotoRef.registrarReferenciaCocinero(objRemotoLadoCliente, idCocinero);
             // Ejecutar el menu del cocinero
-            objMenu.ejecutarMenuCocinero();
-            System.out.println("Esperando Notificaciones...");
+            objMenu.ejecutarMenuCocinero(idCocinero);
         }catch(RemoteException ex){
             System.out.println("Error al registrar el modulo en el servidor");
         }
+        System.exit(0);
     }
 }

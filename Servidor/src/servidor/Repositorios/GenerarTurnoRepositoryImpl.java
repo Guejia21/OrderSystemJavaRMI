@@ -122,6 +122,7 @@ public class GenerarTurnoRepositoryImpl implements GeneradorTurnoRepositoryInt{
             this.vectorCocineros[idCocinero-1].setOcupado(false);
             this.vectorCocineros[idCocinero-1].setObjHamburguesa(null);
             System.out.println("El cocinero con ID " + idCocinero + " ha liberado el pedido.");
+            actualizarTablaPedidos();
             reasignarPedidosDeFilaVirtual();
             return 1;
         }
@@ -180,7 +181,7 @@ public class GenerarTurnoRepositoryImpl implements GeneradorTurnoRepositoryInt{
                 HamburguesaDTO pedido = pedidosFilaVirtual[i];
                 vectorCocineros[posicion].setOcupado(true);
                 vectorCocineros[posicion].setObjHamburguesa(pedido);
-                System.out.println("Asignando pedido de la fila virtual al cocinero en la posición " + (posicion + 1));
+                System.out.println("Asignando pedido de la fila virtual al cocinero con ID " + (posicion + 1));
         
                 // Notificar al cocinero
                 try {
@@ -211,5 +212,17 @@ public class GenerarTurnoRepositoryImpl implements GeneradorTurnoRepositoryInt{
                 break; // Si no hay más cocineros disponibles, salir del bucle
             }
         }
+    }
+
+    public void deshabilitarCocinero(int idCocinero) {
+        this.vectorCocineros[idCocinero-1].setOcupado(false);
+        this.vectorCocineros[idCocinero-1].setObjHamburguesa(null);
+        this.vectorCocineros[idCocinero-1].setNoCocinero(-1);
+        this.vectorCocineros[idCocinero-1] = null;
+        System.out.println("El cocinero con ID " + idCocinero + " se ha desconectado.");
+    }
+
+    public boolean estaCocineroNoInicializado(int idCocinero) {
+        return this.vectorCocineros[idCocinero - 1] == null;
     }
 }
